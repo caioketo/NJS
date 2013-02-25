@@ -1,67 +1,93 @@
 #include "Server.h"
 
-namespace Connections
+
+DWORD WINAPI MainThread(LPVOID lParam)
 {
-    void Server::Startup()
-    {
-        WSADATA wsa;
-        WSAStartup(0x0202, &wsa);
-        this->WorkerSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-        this->EndPnt.sin_addr.s_addr = ADDR_ANY;
-        this->EndPnt.sin_family = AF_INET;
-        this->EndPnt.sin_port = htons(this->Port);
-        this->Enabled = true;
-        this->ID = 0;
-        bind(this->WorkerSocket, (SOCKADDR*)&this->EndPnt, sizeof(this->EndPnt));
-        printf("[AsynServer]Bound..\n");
-        listen(this->WorkerSocket, this->Backlog);
-                CreateThread(NULL, NULL, &MainThread, this, NULL, NULL);
-    }
-    void Server::WaitForConnections(Server * Ser)
-    {
-        WSAEVENT Handler = WSA_INVALID_EVENT;
-        while(Ser->Enabled)
-        {
-            Handler = WSACreateEvent();
-            WSAEventSelect(Ser->WorkerSocket, Handler, FD_ACCEPT);
-            WaitForSingleObject(Handler, INFINITE);
-            SOCKET accptsock = accept(Ser->WorkerSocket, NULL, NULL);
-            Client * NewClient = new Client(accptsock, 255, Ser->ID++);
-            NewClient->Connected = true;
-            printf("[AsynServer]Client connected.\n");
-            ClientServer * OurStruct = new ClientServer();
-            OurStruct->Server = Ser;
-            OurStruct->Client = NewClient;
-            CreateThread(NULL, NULL, &DataThread, OurStruct, NULL, NULL);
-        }
-    }
-    void Server::WaitForData(Client * RClient)
-    {
-        WSAEVENT Tem = WSA_INVALID_EVENT;
-        Tem = WSACreateEvent();
-        WSAEventSelect(RClient->WorkerSocket, Tem, FD_READ);
-        while(RClient->Connected)
-        {
-            WaitForSingleObject(Tem, INFINITE);
-            RClient->RecvSize = recv(RClient->WorkerSocket, RClient->Buffer, 255, NULL);
-            if(RClient->RecvSize > 0)
-            {
-                RClient->Buffer[RClient->RecvSize] = '\0';
-                __raise this->ClientRecieved(RClient, RClient->Buffer);
-                Sleep(50);
-            }
-        }
+    ((Server*)lParam)->WaitForConnections((Server*)lParam);
+    return 0;
+}
+
+
+Server::Server()
+{
+	int iResult;
+	struct addrinfo *result = NULL, *ptr = NULL, hints;
+	this->ListenSocket = INVALID_SOCKET;
+
+	//Constructor
+	this->connections = new list<Connection *>();
+
+	iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
+	if (iResult != 0) {
+		return;
+	}
+
+	ZeroMemory(&hints, sizeof (hints));
+	hints.ai_family = AF_INET;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_protocol = IPPROTO_TCP;
+	hints.ai_flags = AI_PASSIVE;
+
+	iResult = getaddrinfo(NULL, DEFAULT_PORT, &hints, &result);
+	if (iResult != 0) {
+	    WSACleanup();
+		return;
+	}
+
+	this->ListenSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
+	
+
+	if (ListenSocket == INVALID_SOCKET) {
+		freeaddrinfo(result);
+		WSACleanup();
+		return ;
+	}
+
+	iResult = bind( ListenSocket, result->ai_addr, (int)result->ai_addrlen);
+    if (iResult == SOCKET_ERROR) {
+        freeaddrinfo(result);
+        closesocket(ListenSocket);
+        WSACleanup();
         return;
     }
-    DWORD WINAPI MainThread(LPVOID lParam)
+
+	freeaddrinfo(result);
+
+	if ( listen( ListenSocket, SOMAXCONN ) == SOCKET_ERROR ) {
+		closesocket(ListenSocket);
+		WSACleanup();
+		return;
+	}
+}
+
+Server::~Server()
+{
+	//Destructor
+}
+
+int Server::Start()
+{
+	this->Enabled = true;
+	CreateThread(NULL, NULL, &MainThread, this, NULL, NULL);
+	return 0;
+}
+
+void Server::WaitForConnections(Server* Ser)
+{
+	WSAEVENT Handler = WSA_INVALID_EVENT;
+	Handler = WSACreateEvent();
+	while(Ser->Enabled)
     {
-        ((Server*)lParam)->WaitForConnections((Server*)lParam);
-        return 0;
-    }
-    DWORD WINAPI DataThread(LPVOID lParam)
-    {
-        ClientServer * Sta = ((ClientServer*)lParam);
-        Sta->Server->WaitForData(Sta->Client);
-        return 0;
-    }
+		WSAEventSelect(Ser->ListenSocket, Handler, FD_ACCEPT);
+        WaitForSingleObject(Handler, INFINITE);
+        SOCKET accptsock = accept(Ser->ListenSocket, NULL, NULL);
+		this->connections->push_back(new Connection(accptsock));
+        /*Client * NewClient = new Client(accptsock, 255, Ser->ID++);
+        NewClient->Connected = true;
+        printf("[AsynServer]Client connected.\n");
+        ClientServer * OurStruct = new ClientServer();
+        OurStruct->Server = Ser;
+        OurStruct->Client = NewClient;
+        CreateThread(NULL, NULL, &DataThread, OurStruct, NULL, NULL);*/
+	}
 }
