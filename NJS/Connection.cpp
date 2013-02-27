@@ -1,28 +1,41 @@
 #include "Connection.h"
 
-void Connection::Start() 
+
+DWORD WINAPI DataThread(LPVOID lParam)
+{
+    ((Connection*)lParam)->WaitForData((Connection*)lParam);
+    return 0;
+}
+
+void Connection::WaitForData(Connection* Conn)
 {
 	WSAEVENT Tem = WSA_INVALID_EVENT;
     Tem = WSACreateEvent();
-    WSAEventSelect(this->ClientSocket, Tem, FD_READ);
-    while(this->Connected)
+    WSAEventSelect(Conn->ClientSocket, Tem, FD_READ);
+    while(Conn->Connected)
     {
         WaitForSingleObject(Tem, INFINITE);
-		this->RecvSize = recv(this->ClientSocket, this->Buffer, 1024, NULL);
-        if(this->RecvSize > 0)
+		Conn->RecvSize = recv(Conn->ClientSocket, Conn->Buffer, 1024, NULL);
+        if(Conn->RecvSize > 0)
         {
-            this->Buffer[this->RecvSize - 1] = '\0';
-			if (!this->Handshaked)
+			Conn->Buffer[Conn->RecvSize] = '\0';
+
+			if (!Conn->Handshaked)
 			{
-				this->Handshaked = this->DoHandshake();
-				if (!this->Handshaked)
+				Conn->Handshaked = Conn->DoHandshake();
+				if (!Conn->Handshaked)
 				{
 					return;
 				}
 			}
 			else
 			{
-				if (!this->Parse())
+				if (!Conn->EndRead(Conn->RecvSize))
+				{
+					return;
+				}
+
+				if (!Conn->Parse())
 				{
 					return;
 				}
@@ -31,6 +44,11 @@ void Connection::Start()
         }
     }
     return;
+}
+
+void Connection::Start() 
+{
+	CreateThread(NULL, NULL, &DataThread, this, NULL, NULL);
 }
 
 bool Connection::Parse()
@@ -52,7 +70,6 @@ std::string Connection::ComputeHandshakeSec(std::string key)
 
 bool Connection::DoHandshake()
 {
-	std::string teste = ComputeHandshakeSec("6p4JLlCIqXcBJol7kec4Cw==");
 	std::string clientHandshake( reinterpret_cast< char const* >(this->Buffer) ) ;
     std::istringstream f(clientHandshake);
 	std::string acceptKey = "";
@@ -93,6 +110,55 @@ bool Connection::DoHandshake()
 
 
 	return false;
+}
+
+bool Connection::EndRead(int rSize)
+{
+	unsigned char firstByte = this->Buffer[0];
+	unsigned char secondByte = this->Buffer[1];
+
+	if (firstByte != 0x81)
+	{
+		return false;
+	}
+
+	if (secondByte < 0x80)
+	{
+		return false;
+	}
+
+	int len = secondByte & 0x7F;
+	int nextByte = 2;
+	if (len == 126)
+    {
+		unsigned char lenByte[2] = {this->Buffer[2], this->Buffer[3]};
+        len = BitConverter::ToUInt16(lenByte, 0);
+        nextByte = 4;
+    }
+
+    if (len == 127)
+    {
+		unsigned char lenByte[4] = {this->Buffer[2], this->Buffer[3], this->Buffer[4], this->Buffer[5]};
+        len = BitConverter::ToUInt16(lenByte, 0);
+        nextByte = 6;
+    }
+
+
+	unsigned char mask[4] = {this->Buffer[nextByte], this->Buffer[nextByte + 1], this->Buffer[nextByte + 2], this->Buffer[nextByte + 3]};
+    unsigned char *text = new unsigned char[len];
+	for (int i = 0; i < len + 1; i++)
+	{
+		text[i] = this->Buffer[nextByte + 4 + i];
+	}
+    
+    unsigned char *unmaskedText = new unsigned char[len];
+
+	for (int i = 0; i < len; i++)
+	{
+		unmaskedText[i] = text[i] ^ mask[i % 4];
+	}
+
+    return true;
 }
 
 Connection::Connection(SOCKET sock)

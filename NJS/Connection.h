@@ -2,6 +2,7 @@
 #include "base64.h"
 #pragma comment (lib, "libeay32.lib")
 #include "openssl\sha.h"
+#include "BitConverter.h"
 
 class Connection {
 private:
@@ -14,9 +15,11 @@ protected:
 	std::string ComputeHandshakeSec(std::string);
 	bool DoHandshake();
 	bool Parse();
+	bool EndRead(int);
 public:
 	void Start();
 	Connection(SOCKET);
+	void WaitForData(Connection* Conn);
 };
 
 
