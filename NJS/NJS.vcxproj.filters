@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\cryptopp">
+      <UniqueIdentifier>{10da4b39-fc0c-466a-a95f-5bfa8226d2f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,6 +27,9 @@
     <ClCompile Include="Connection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="base64.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Server.h">
@@ -33,6 +39,414 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Connection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\dll.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\3way.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\adler32.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\aes.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\algebra.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\algparam.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\arc4.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\argnames.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\asn.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\authenc.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\base32.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\base64.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\basecode.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\bench.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\blowfish.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\blumshub.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\camellia.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\cast.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\cbcmac.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\ccm.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\channels.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\cmac.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\config.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\cpu.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\crc.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\cryptlib.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\default.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\des.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\dh.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\dh2.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\dmac.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\dsa.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\eax.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\ec2n.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\eccrypto.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\ecp.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\elgamal.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\emsa2.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\eprecomp.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\esign.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\factory.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\files.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\filters.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\fips140.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\fltrimpl.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\gcm.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\gf2_32.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\gf2n.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\gf256.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\gfpcrypt.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\gost.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\gzip.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\hex.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\hmac.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\hrtimer.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\ida.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\idea.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\integer.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\iterhash.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\lubyrack.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\luc.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\mars.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\md2.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\md4.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\md5.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\mdc.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\misc.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\modarith.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\modes.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\modexppc.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\mqueue.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\mqv.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\nbtheory.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\network.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\nr.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\oaep.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\oids.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\osrng.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\panama.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\pch.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\pkcspad.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\polynomi.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\pssr.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\pubkey.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\pwdbased.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\queue.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\rabin.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\randpool.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\rc2.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\rc5.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\rc6.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\resource.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\rijndael.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\ripemd.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\rng.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\rsa.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\rw.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\safer.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\salsa.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\seal.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\secblock.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\seckey.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\seed.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\serpent.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\serpentp.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\sha.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\sha3.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\shacal2.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\shark.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\simple.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\skipjack.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\smartptr.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\socketft.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\sosemanuk.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\square.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\stdcpp.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\strciphr.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\tea.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\tiger.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\trdlocal.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\trunhash.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\ttmac.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\twofish.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\validate.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\vmac.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\wait.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\wake.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\whrlpool.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\winpipes.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\words.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\xtr.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\xtrcrypt.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\zdeflate.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\zinflate.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="cryptopp\zlib.h">
+      <Filter>Header Files\cryptopp</Filter>
+    </ClInclude>
+    <ClInclude Include="base64.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

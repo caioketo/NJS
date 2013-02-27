@@ -81,7 +81,9 @@ void Server::WaitForConnections(Server* Ser)
 		WSAEventSelect(Ser->ListenSocket, Handler, FD_ACCEPT);
         WaitForSingleObject(Handler, INFINITE);
         SOCKET accptsock = accept(Ser->ListenSocket, NULL, NULL);
-		this->connections->push_back(new Connection(accptsock));
+		Connection* conn = new Connection(accptsock);
+		this->connections->push_back(conn);
+		conn->Start();
         /*Client * NewClient = new Client(accptsock, 255, Ser->ID++);
         NewClient->Connected = true;
         printf("[AsynServer]Client connected.\n");

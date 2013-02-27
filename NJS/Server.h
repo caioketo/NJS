@@ -5,7 +5,7 @@
 #include "PCH.h"
 #include "Connection.h"
 
-#define DEFAULT_PORT "27015"
+#define DEFAULT_PORT "8181"
 #define DEFAULT_BUFLEN 512
 
 
