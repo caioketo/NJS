@@ -1,3 +1,4 @@
+#include "PCH.h"
 #include "Connection.h"
 
 
@@ -15,7 +16,7 @@ void Connection::WaitForData(Connection* Conn)
     while(Conn->Connected)
     {
         WaitForSingleObject(Tem, INFINITE);
-		Conn->RecvSize = recv(Conn->ClientSocket, Conn->Buffer, 1024, NULL);
+		Conn->RecvSize = recv(Conn->ClientSocket, Conn->Buffer, 9216, NULL);
         if(Conn->RecvSize > 0)
         {
 			Conn->Buffer[Conn->RecvSize] = '\0';
@@ -35,7 +36,7 @@ void Connection::WaitForData(Connection* Conn)
 					return;
 				}
 
-				if (!Conn->Parse())
+				if (!Conn->Parse(Conn->InMessage))
 				{
 					return;
 				}
@@ -51,8 +52,15 @@ void Connection::Start()
 	CreateThread(NULL, NULL, &DataThread, this, NULL, NULL);
 }
 
-bool Connection::Parse()
+bool Connection::Parse(NetworkMessage message)
 {
+	unsigned char type = message.GetByte();
+	switch (type)
+	{
+	case ClientTypePacket::Login:
+		LoginPacket * lPacket = LoginPacket::Parse(message);
+		break;
+	}
 	return true;
 }
 
@@ -145,10 +153,13 @@ bool Connection::EndRead(int rSize)
 
 
 	unsigned char mask[4] = {this->Buffer[nextByte], this->Buffer[nextByte + 1], this->Buffer[nextByte + 2], this->Buffer[nextByte + 3]};
-    unsigned char *text = new unsigned char[len];
+    unsigned char *text = new unsigned char[len + 1];
 	for (int i = 0; i < len + 1; i++)
 	{
-		text[i] = this->Buffer[nextByte + 4 + i];
+		if ((nextByte + 4 + i) < 9216)
+		{
+			text[i] = this->Buffer[nextByte + 4 + i];
+		}
 	}
     
     unsigned char *unmaskedText = new unsigned char[len];
@@ -157,8 +168,104 @@ bool Connection::EndRead(int rSize)
 	{
 		unmaskedText[i] = text[i] ^ mask[i % 4];
 	}
+	std::string json(unmaskedText, unmaskedText + len);
+	std::istringstream f(json);
+	std::string s;
+	int length = 0;
+
+	this->InMessage.Reset();
+
+	while (std::getline(f, s, ',')) {
+		s.erase(std::remove(s.begin(), s.end(), '{'), s.end());
+		s.erase(std::remove(s.begin(), s.end(), '"'), s.end());
+		if (std::string::npos == s.find("length"))
+		{
+			std::string i = s.substr(0, s.find(":"));	
+			std::string valor = s.substr(s.find(":") + 1);
+			unsigned char temp = (unsigned char)atoi(valor.c_str());
+			this->InMessage.Buffer[atoi(i.c_str())] = temp;
+		}
+		else
+		{
+			std::string valorLen = s.substr(s.find(":") + 1);
+			length = atoi(valorLen.c_str());
+			break;
+		}
+    }
+
+	this->InMessage.Length = length;
+	this->InMessage.Position = 0;
+
+	byte t = this->InMessage.GetByte();
 
     return true;
+}
+
+void Connection::Send(NetworkMessage message)
+{
+	unsigned char * sendText = message.JSONBuffer();
+    unsigned char * temp;
+	if (message.JSONLength() > 125)
+    {
+        if (message.JSONLength() < 65536)
+        {
+            temp = new unsigned char [4 + message.JSONLength()];
+        }
+        else
+        {
+            temp = new unsigned char [10 + message.JSONLength()];
+        }
+    }
+    else
+    {
+        temp = new unsigned char [2 + message.JSONLength()];
+    }
+    temp[0] = 0x81;
+
+    if (message.JSONLength() > 125)
+    {
+        if (message.JSONLength() < 65536)
+        {
+            temp[1] = 126;
+            temp[2] = (message.JSONLength() >> 8);
+            temp[3] = (message.JSONLength() & 0xFF);
+			for (int i = 0; i < message.JSONLength(); i++)
+			{
+				temp[i + 4] = sendText[i];
+			}
+        }
+        else
+        {
+            temp[1] = 127;
+            unsigned char * len = new unsigned char[8];
+			len = BitConverter::FromUint64((long)message.JSONLength());
+            unsigned char * tt = new unsigned char [8];
+            for (int i = 0; i < 8; i++)
+            {
+                temp[9 - i] = len[i];
+            }
+			for (int i = 0; i < message.JSONLength(); i++)
+			{
+				temp[i + 10] = sendText[i];
+			}
+        }
+    }
+    else
+    {
+        temp[1] = message.JSONLength();
+		for (int i = 0; i < message.JSONLength(); i++)
+		{
+			temp[i + 2] = sendText[i];
+		}
+    }
+
+	int iResult = send(this->ClientSocket, (const char *)temp, message.JSONLength(), 0);
+
+	if (iResult == SOCKET_ERROR)
+	{
+		//Error
+		return;
+	}
 }
 
 Connection::Connection(SOCKET sock)

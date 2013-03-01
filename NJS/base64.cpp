@@ -1,3 +1,4 @@
+#include "PCH.h"
 #include "base64.h"
 
 static const std::string base64_chars = 

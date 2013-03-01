@@ -1,3 +1,5 @@
+#ifndef __SERVER_H_INCLUDED__
+#define __SERVER_H_INCLUDED__
 #undef UNICODE
 
 #define WIN32_LEAN_AND_MEAN
@@ -24,3 +26,6 @@ public:
 	void WaitForConnections(Server*);
 };
 
+
+
+#endif
