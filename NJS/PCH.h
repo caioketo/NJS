@@ -28,4 +28,8 @@
 #pragma comment (lib, "Ws2_32.lib")
 using namespace std;
 
+struct Vertex {
+	float x, y, z;
+};
+
 #endif

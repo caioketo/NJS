@@ -33,6 +33,7 @@ unsigned char * BitConverter::FromUint16(unsigned short value)
 	unsigned char * result = new unsigned char[2];
 	result[0] = value;
 	result[1] = value >> 8;
+	result[2] = '\0';
 	return result;
 }
 
@@ -43,6 +44,7 @@ unsigned char * BitConverter::FromUint32(unsigned int value)
 	result[1] = value >> 8;
 	result[2] = value >> 16;
 	result[3] = value >> 24;
+	result[4] = '\0';
 	return result;
 }
 
@@ -57,5 +59,6 @@ unsigned char * BitConverter::FromUint64(unsigned long value)
 	result[5] = value >> 40;
 	result[6] = value >> 48;
 	result[7] = value >> 56;
+	result[8] = '\0';
 	return result;
 }

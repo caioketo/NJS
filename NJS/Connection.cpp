@@ -58,10 +58,13 @@ bool Connection::Parse(NetworkMessage message)
 	{
 	case ClientTypePacket::Login:
 		//LoginPacket * lPacket = LoginPacket::Parse(message);
-
 		NetworkMessage* outMessage = new NetworkMessage();
-		outMessage->AddByte(1);
-		outMessage->AddByte(2);
+		Terrain terrain = instance;
+		for (int i = 0; i < 10; i++)
+		{
+			outMessage->AddVertex(terrain.vertices[i]);
+		}
+
 		this->Send(*outMessage);
 
 		break;

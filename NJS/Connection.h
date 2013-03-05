@@ -9,7 +9,7 @@
 #include "Enums.h"
 #include "LoginPacket.h"
 #include "BitConverter.h"
-
+#include "Terrain.h"
 
 
 class Connection {

@@ -16,6 +16,12 @@
     <Filter Include="Header Files\cryptopp">
       <UniqueIdentifier>{10da4b39-fc0c-466a-a95f-5bfa8226d2f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Content">
+      <UniqueIdentifier>{c33c488c-c400-45c4-a984-fc42891a5b02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Content">
+      <UniqueIdentifier>{7f6f181b-a2bf-496c-8f05-f1a49dc45cb5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -41,6 +47,9 @@
     </ClCompile>
     <ClCompile Include="PCH.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Source Files\Content</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -475,6 +484,9 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Header Files\Content</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

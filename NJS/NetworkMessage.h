@@ -28,6 +28,12 @@ public:
 
 	void AddJSON(unsigned char *);
 	void AddByte(unsigned char);
+	void AddBytes(unsigned char *, int);
+	void AddUint16(unsigned short);
+	void AddUint32(unsigned int);
+	void AddUint64(unsigned long);
+	void AddFloat(float);
+	void AddVertex(Vertex);
 };
 
 #endif

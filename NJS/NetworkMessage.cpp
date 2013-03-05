@@ -1,6 +1,18 @@
 ﻿#include "PCH.h"
 #include "NetworkMessage.h"
 
+inline int lengthOfU(unsigned char * str)
+{
+    int i = 0;
+
+    while(*(str++)){
+    	i++;
+    	if(i == INT_MAX)
+    	    return -1;
+    }
+
+    return i;
+}
 
 inline void encode_utf8(const std::wstring& wstr, std::string& bytes)
 {
@@ -76,6 +88,49 @@ NetworkMessage::NetworkMessage()
 	this->Reset();
 }
 
+
+
+void NetworkMessage::AddUint16(unsigned short value)
+{
+	unsigned char* bValues = BitConverter::FromUint16(value);
+	this->AddBytes(bValues, 2);
+}
+
+
+void NetworkMessage::AddUint32(unsigned int value)
+{
+	unsigned char* bValues = BitConverter::FromUint32(value);
+	this->AddBytes(bValues, 4);
+}
+
+void NetworkMessage::AddUint64(unsigned long value)
+{
+	unsigned char* bValues = BitConverter::FromUint64(value);
+	this->AddBytes(bValues, 8);
+}
+
+void NetworkMessage::AddFloat(float value)
+{
+	unsigned int iValue = (unsigned int)(value * 100);
+	this->AddUint32(iValue);
+}
+
+void NetworkMessage::AddVertex(Vertex value)
+{
+	this->AddFloat(value.x);
+	this->AddFloat(value.y);
+	this->AddFloat(value.z);
+}
+
+
+void NetworkMessage::AddBytes(unsigned char * value, int count)
+{
+	for (int i = 0; i < count; i++)
+	{
+		this->AddByte(value[i]);
+	}
+}
+
 void NetworkMessage::AddByte(unsigned char value)
 {
 	AddJSON(new unsigned char(value));
@@ -124,7 +179,7 @@ void NetworkMessage::AddJSON(unsigned char * value)
 
 			if (!found)
 			{
-				pos = this->JSONbuffer.find(",") + 1;
+				pos = this->JSONbuffer.find_last_of(",") + 1;
 			}
 		}
 	}
