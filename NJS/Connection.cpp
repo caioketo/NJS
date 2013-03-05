@@ -1,7 +1,6 @@
 #include "PCH.h"
 #include "Connection.h"
 
-
 DWORD WINAPI DataThread(LPVOID lParam)
 {
     ((Connection*)lParam)->WaitForData((Connection*)lParam);
@@ -58,7 +57,13 @@ bool Connection::Parse(NetworkMessage message)
 	switch (type)
 	{
 	case ClientTypePacket::Login:
-		LoginPacket * lPacket = LoginPacket::Parse(message);
+		//LoginPacket * lPacket = LoginPacket::Parse(message);
+
+		NetworkMessage* outMessage = new NetworkMessage();
+		outMessage->AddByte(1);
+		outMessage->AddByte(2);
+		this->Send(*outMessage);
+
 		break;
 	}
 	return true;
@@ -203,63 +208,83 @@ bool Connection::EndRead(int rSize)
 
 void Connection::Send(NetworkMessage message)
 {
-	unsigned char * sendText = message.JSONBuffer();
-    unsigned char * temp;
-	if (message.JSONLength() > 125)
-    {
-        if (message.JSONLength() < 65536)
-        {
-            temp = new unsigned char [4 + message.JSONLength()];
-        }
-        else
-        {
-            temp = new unsigned char [10 + message.JSONLength()];
-        }
-    }
-    else
-    {
-        temp = new unsigned char [2 + message.JSONLength()];
-    }
-    temp[0] = 0x81;
+	unsigned char* frame = NULL;
 
-    if (message.JSONLength() > 125)
-    {
-        if (message.JSONLength() < 65536)
-        {
-            temp[1] = 126;
-            temp[2] = (message.JSONLength() >> 8);
-            temp[3] = (message.JSONLength() & 0xFF);
-			for (int i = 0; i < message.JSONLength(); i++)
-			{
-				temp[i + 4] = sendText[i];
-			}
-        }
-        else
-        {
-            temp[1] = 127;
-            unsigned char * len = new unsigned char[8];
-			len = BitConverter::FromUint64((long)message.JSONLength());
-            unsigned char * tt = new unsigned char [8];
-            for (int i = 0; i < 8; i++)
-            {
-                temp[9 - i] = len[i];
-            }
-			for (int i = 0; i < message.JSONLength(); i++)
-			{
-				temp[i + 10] = sendText[i];
-			}
-        }
-    }
-    else
-    {
-        temp[1] = message.JSONLength();
-		for (int i = 0; i < message.JSONLength(); i++)
-		{
-			temp[i + 2] = sendText[i];
-		}
-    }
+	unsigned char* frameMsg = NULL;
+	
+	char* temp = message.JSONBuffer();
+	int nMsgLen = strlen(temp);
 
-	int iResult = send(this->ClientSocket, (const char *)temp, message.JSONLength(), 0);
+	int nFrameLen = nMsgLen + 2;
+
+
+	if ( nMsgLen <= 125 )
+
+	{
+
+		frame = new unsigned char[nFrameLen];
+
+		frame[0] = 0x81;
+
+		frame[1] = nMsgLen;
+
+		frameMsg = frame+2;
+
+	} else if ( nMsgLen <= 65000 )
+
+	{
+
+		nFrameLen += 2;
+
+		frame = new unsigned char[nFrameLen];
+
+		frame[0] = 0x81;
+
+		frame[1] = 126;
+
+		frame[2] = nMsgLen >> 8;
+
+		frame[3] = nMsgLen & 0xff;
+
+		frameMsg = frame + 4;
+
+	} else
+
+	{
+
+		nFrameLen += 8;
+
+		frame = new unsigned char[nFrameLen];
+
+		frame[0] = 0x81;
+
+		frame[1] = 127;
+
+
+		frame[2] = 0;
+
+		frame[3] = 0;
+
+		frame[4] = 0;
+
+		frame[5] = 0;
+
+		frame[6] = (nMsgLen >> 24) & 0xff;
+
+		frame[7] = (nMsgLen >> 16) & 0xff;
+
+		frame[8] = (nMsgLen >> 8) & 0xff;
+
+		frame[9] = (nMsgLen >> 0) & 0xff;
+
+
+		frameMsg = frame + 10;
+
+	} 
+
+	memcpy(frameMsg, temp, nMsgLen);
+
+	int iResult = send(this->ClientSocket, (char *)frame, nFrameLen, 0);
 
 	if (iResult == SOCKET_ERROR)
 	{

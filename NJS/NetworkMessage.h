@@ -7,16 +7,16 @@
 class NetworkMessage {
 private:
 	int JSONlength;
-	unsigned char * JSONbuffer;
-	bool changed;
+	
 
-public:
+public:	
+	std::string JSONbuffer;
 	unsigned char Buffer[9216];
 	int Length;
 	int Position;
 
 	int JSONLength();
-	unsigned char * JSONBuffer();
+	char * JSONBuffer();
 
 	NetworkMessage();
 	void Reset();
@@ -25,6 +25,9 @@ public:
 	unsigned char GetByte();
 	string GetString();
 	unsigned short GetUint16();
+
+	void AddJSON(unsigned char *);
+	void AddByte(unsigned char);
 };
 
 #endif
